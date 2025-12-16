@@ -4,8 +4,6 @@
 #include <conio.h>
 using namespace std;
 
-string save_dir = "data\\";
-
 void withdraw(double &balance, string &filename)
 {
 	double amount;
@@ -14,6 +12,15 @@ void withdraw(double &balance, string &filename)
 	cout<<"Current Balance: $"<<balance<<endl;
 	cout<<"Please enter amount to Withdraw: $";
 	cin>>amount;
+
+	if(cin.fail())
+	{
+		cin.clear();
+		cin.ignore(1000,'\n');
+		cout<<"Please enter a valid amount.\n\n"<<endl;
+		return;
+	}
+
 	if(amount > 0 && amount <= balance)
 	{
 		balance -= amount;
@@ -25,7 +32,7 @@ void withdraw(double &balance, string &filename)
 		file << balance;
 		file.close();
 
-		cout<<"If you want to proceed with another deposit press Y (any other to go back): ";
+		cout<<"If you want to proceed with another Withdraw press Y (any other to go back): ";
 		cin>>key;
 
 		if(key == 'y' || key == 'Y') withdraw(balance, filename);
@@ -45,6 +52,15 @@ void deposit(double &balance, string &filename)
 	cout<<"Current Balance: $"<<balance<<endl;
 	cout<<"Please enter amount to Deposit: $";
 	cin>>amount;
+	
+	if(cin.fail())
+	{
+		cin.clear();
+		cin.ignore(1000,'\n');
+		cout<<"Please enter a valid amount.\n\n"<<endl;
+		return;
+	}
+	
 	if(amount > 0)
 	{
 		balance += amount;
@@ -104,6 +120,7 @@ int main()
 		cout<<"Please Enter username & password (type exit to quit): "<<endl;
 		while(!loggedin)
 		{
+			if(max_attempts > 1) system("color a"); else system("color c");
 			cout<<"Username: ";
 			cin>>username;
 			
@@ -153,6 +170,7 @@ int main()
 
 		while(loggedin)
 		{
+			if(c_balance < 3000) system("color c"); else system("color a");
 			cout<<"\t\tWelcome Back, "<<username<<endl;
 			cout<<"<<<Please Choose an option>>>"<<endl;
 			cout<<"1. Withdraw Money"<<endl;
@@ -166,13 +184,16 @@ int main()
 			switch(option)
 			{
 				case 1:
+					system("color c");
 					withdraw(c_balance, users[i][0]);
 					break;
 				case 2:
+					system("color a");
 					deposit(c_balance, users[i][0]);
 					break;
 				case 3:
 					system("cls");
+					if(c_balance < 3000) system("color c"); else system("color a");
 					cout<<"Current Balance: $"<<c_balance<<endl<<endl;
 					break;
 				case 4:
